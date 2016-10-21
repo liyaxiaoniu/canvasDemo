@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>绘制星星</title>
+</head>
+<body>
+		<canvas id="canvas"></canvas>
+		<script>
+		window.onload = function(){
+				var canvas = document.getElementById('canvas');
+				canvas.width =1200;
+				canvas.height = 800;
+				var context = canvas.getContext('2d');
+				//线性渐变
+				// var skyStyle = context.createLinearGradient(0,0,0,canvas.height);
+				// 径向渐变
+				var skyStyle = context.createRadialGradient (canvas.width/2,canvas.height,0,canvas.width/2,canvas.height,canvas.height);
+
+				skyStyle.addColorStop(0.0,'black');
+				skyStyle.addColorStop(1.0,'#035');
+				context.fillStyle = skyStyle;
+				context.fillRect(0,0,canvas.width,canvas.height);
+				// context.lineJoin = 'miter';
+				// context.miterLimit = 10;
+				for(var i=0 ; i<200 ; i++){
+					var r = Math.random() * 5 + 5;
+					var x = Math.random() * canvas.width;
+					var y = Math.random() * canvas.height * 0.6;
+					var a = Math.random() * 360;
+					drawStar(context,x,y,r,a);
+				}
+				// drawStar(context,400,400,300,150,20);
+
+		}
+		//绘制出在（x,y)，大小为R，旋转rot度的五角星
+		function drawStar(cxt,x,y,R,rot){
+				cxt.save();
+				cxt.translate(x,y);
+				cxt.rotate(rot/180*Math.PI);
+				cxt.scale(R,R);
+				starPath(cxt);
+
+				cxt.fillStyle = '#fb3';
+				// cxt.strokeStyle = '#fb5';
+				// cxt.lineWidth = 3;
+				// cxt.lineJoin = 'round';
+
+				cxt.fill();
+				// cxt.stroke();
+				cxt.restore();
+		}
+		function starPath(cxt){
+				cxt.beginPath();
+				for(var i=0 ; i<5 ;i++){
+						cxt.lineTo(Math.cos((18 + i*72)/180 * Math.PI),
+							-Math.sin((18 + i*72)/180 * Math.PI) );
+						cxt.lineTo(Math.cos((54 + i*72)/180 * Math.PI) * 0.5,
+							-Math.sin((54 + i*72)/180 * Math.PI) * 0.5);
+				}
+				cxt.closePath();
+
+		}
+		</script>
+</body>
+</html>
